@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'btrapps/.dart'; // Pastikan file ini ada. Jika error, hapus baris ini.
+
+// Jika kamu pakai btrapps/.dart, pastikan file itu ada.
+// Jika error, hapus import di bawah ini dan gunakan URL langsung.
+import 'btrapps/.dart'; 
 final baseUrl = Api.api;
 
 class AdminPage extends StatefulWidget {
@@ -19,7 +22,7 @@ class _AdminPageState extends State<AdminPage> {
   List<dynamic> fullUserList = [];
   List<dynamic> filteredList = [];
 
-  // ✅ TAMBAHKAN ROLE OWNER & DEVELOPER DI SINI
+  // Role Options
   final List<String> roleOptions = ['vip', 'reseller', 'member'];
   String selectedRole = 'member';
 
@@ -478,86 +481,6 @@ class _AdminPageState extends State<AdminPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.admin_panel_settings, color: accentPurple, size: 50),
-                SizedBox(height: 10),
-                Text(
-                  "ADMIN DASHBOARD",
-                  style: TextStyle(
-                    color: primaryWhite,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Orbitron',
-                    letterSpacing: 2,
-                    shadows: [
-                      Shadow(
-                        color: primaryPurple.withOpacity(0.8),
-                        blurRadius: 10,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 40),
-
-                _buildGlassCard(
-                  title: "DELETE USER",
-                  icon: FontAwesomeIcons.userSlash,
-                  children: [
-                    _buildInput(
-                      label: "Username Target",
-                      controller: deleteController,
-                      icon: FontAwesomeIcons.user,
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Colors.redAccent, Colors.red],
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.red.withOpacity(0.3),
-                            blurRadius: 10,
-                            offset: Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: ElevatedButton(
-                        onPressed: isLoading ? null : _deleteUser,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.delete, size: 18, color: Colors.white),
-                            SizedBox(width: 8),
-                            Text(
-                              "DELETE ACCOUNT",
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: bgDark,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [bgDark, primaryPurple.withOpacity(0.1), bgDark],
-          ),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
                 // Header
                 Icon(Icons.admin_panel_settings, color: accentPurple, size: 50),
                 SizedBox(height: 10),
@@ -659,134 +582,132 @@ class _AdminPageState extends State<AdminPage> {
                         horizontal: 12,
                         vertical: 4,
                       ),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: borderGlass),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: newUserRole,
-                          dropdownColor: bgDark,
-                          style: TextStyle(color: primaryWhite),
-                          items: roleOptions.map((role) {
-                            return DropdownMenuItem(
-                              value: role,
-                              child: Text(role.toUpperCase()),
-                            );
-                          }).toList(),
-                          onChanged: (val) =>
-                              setState(() => newUserRole = val ?? 'member'),
-                        ),
-                      ),
+                                        decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: borderGlass),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: newUserRole,
+                      dropdownColor: bgDark,
+                      style: TextStyle(color: primaryWhite),
+                      items: roleOptions.map((role) {
+                        return DropdownMenuItem(
+                          value: role,
+                          child: Text(role.toUpperCase()),
+                        );
+                      }).toList(),
+                      onChanged: (val) =>
+                          setState(() => newUserRole = val ?? 'member'),
                     ),
-                    SizedBox(height: 20),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [primaryPurple, accentPurple],
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: primaryPurple.withOpacity(0.4),
-                            blurRadius: 10,
-                            offset: Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: ElevatedButton(
-                        onPressed: isLoading ? null : _createAccount,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: isLoading
-                            ? SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: primaryWhite,
-                                ),
-                              )
-                            : Text(
-                                "CREATE ACCOUNT",
-                                style: TextStyle(
-                                  color: primaryWhite,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-
-                // SECTION 3: USER LIST
-                _buildGlassCard(
-                  title: "USER MANAGEMENT",
-                  icon: FontAwesomeIcons.users,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 4,
+                SizedBox(height: 20),
+                Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [primaryPurple, accentPurple],
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: primaryPurple.withOpacity(0.4),
+                        blurRadius: 10,
+                        offset: Offset(0, 4),
                       ),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.2),
+                    ],
+                  ),
+                  child: ElevatedButton(
+                    onPressed: isLoading ? null : _createAccount,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: borderGlass),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: selectedRole,
-                          dropdownColor: bgDark,
-                          style: TextStyle(color: primaryWhite),
-                          items: roleOptions.map((role) {
-                            return DropdownMenuItem(
-                              value: role,
-                              child: Text(role.toUpperCase()),
-                            );
-                          }).toList(),
-                          onChanged: (val) {
-                            if (val != null) {
-                              selectedRole = val;
-                              _filterAndPaginate();
-                            }
-                          },
-                        ),
                       ),
                     ),
-                    SizedBox(height: 20),
-                    isLoading
-                        ? Center(
+                    child: isLoading
+                        ? SizedBox(
+                            width: 20,
+                            height: 20,
                             child: CircularProgressIndicator(
-                              color: accentPurple,
+                              strokeWidth: 2,
+                              color: primaryWhite,
                             ),
                           )
-                        : Column(
-                            children: [
-                              ..._getCurrentPageData()
-                                  .map((u) => _buildUserItem(u))
-                                  .toList(),
-                              SizedBox(height: 20),
-                              _buildPagination(),
-                            ],
+                        : Text(
+                            "CREATE ACCOUNT",
+                            style: TextStyle(
+                              color: primaryWhite,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1,
+                            ),
                           ),
-                  ],
+                  ),
                 ),
-
-                SizedBox(height: 30),
               ],
             ),
-          ),
+
+            // SECTION 3: USER LIST
+            _buildGlassCard(
+              title: "USER MANAGEMENT",
+              icon: FontAwesomeIcons.users,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: borderGlass),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: selectedRole,
+                      dropdownColor: bgDark,
+                      style: TextStyle(color: primaryWhite),
+                      items: roleOptions.map((role) {
+                        return DropdownMenuItem(
+                          value: role,
+                          child: Text(role.toUpperCase()),
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        if (val != null) {
+                          selectedRole = val;
+                          _filterAndPaginate();
+                        }
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: accentPurple,
+                        ),
+                      )
+                    : Column(
+                        children: [
+                          ..._getCurrentPageData()
+                              .map((u) => _buildUserItem(u))
+                              .toList(),
+                          SizedBox(height: 20),
+                          _buildPagination(),
+                        ],
+                      ),
+              ],
+            ),
+
+            SizedBox(height: 30),
+          ],
         ),
       ),
-    );
-  }
-                              }
+    ),
+  ),
+);
