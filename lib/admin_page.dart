@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-// Jika kamu pakai btrapps/.dart, pastikan file itu ada.
-// Jika error, hapus import di bawah ini dan gunakan URL langsung.
 import 'btrapps/.dart'; 
+
 final baseUrl = Api.api;
 
 class AdminPage extends StatefulWidget {
@@ -22,7 +20,6 @@ class _AdminPageState extends State<AdminPage> {
   List<dynamic> fullUserList = [];
   List<dynamic> filteredList = [];
 
-  // Role Options
   final List<String> roleOptions = ['vip', 'reseller', 'member'];
   String selectedRole = 'member';
 
@@ -36,7 +33,6 @@ class _AdminPageState extends State<AdminPage> {
   String newUserRole = 'member';
   bool isLoading = false;
 
-  // --- TEMA WARNA UNGU ---
   final Color bgDark = const Color(0xFF1E0505);
   final Color primaryPurple = const Color(0xFFE91E63);
   final Color accentPurple = const Color(0xFFFF80AB);
@@ -62,10 +58,7 @@ class _AdminPageState extends State<AdminPage> {
         fullUserList = data['users'] ?? [];
         _filterAndPaginate();
       } else {
-        _alert(
-          "⚠️ Error",
-          data['message'] ?? 'Tidak diizinkan melihat daftar user.',
-        );
+        _alert("⚠️ Error", data['message'] ?? 'Tidak diizinkan melihat daftar user.');
       }
     } catch (_) {
       _alert("🌐 Error", "Gagal memuat user list.");
@@ -76,9 +69,7 @@ class _AdminPageState extends State<AdminPage> {
   void _filterAndPaginate() {
     setState(() {
       currentPage = 1;
-      filteredList = fullUserList
-          .where((u) => u['role'] == selectedRole)
-          .toList();
+      filteredList = fullUserList.where((u) => u['role'] == selectedRole).toList();
     });
   }
 
@@ -103,16 +94,11 @@ class _AdminPageState extends State<AdminPage> {
     setState(() => isLoading = true);
     try {
       final res = await http.get(
-        Uri.parse(
-          '$baseUrl/deleteUser?key=$sessionKey&username=$username',
-        ),
+        Uri.parse('$baseUrl/deleteUser?key=$sessionKey&username=$username'),
       );
       final data = jsonDecode(res.body);
       if (data['deleted'] == true) {
-        _alert(
-          "✅ Berhasil",
-          "User '${data['user']['username']}' telah dihapus.",
-        );
+        _alert("✅ Berhasil", "User '${data['user']['username']}' telah dihapus.");
         deleteController.clear();
         _fetchUsers();
       } else {
@@ -143,10 +129,7 @@ class _AdminPageState extends State<AdminPage> {
       final data = jsonDecode(res.body);
 
       if (data['created'] == true) {
-        _alert(
-          "✅ Sukses",
-          "Akun '${data['user']['username']}' berhasil dibuat.",
-        );
+        _alert("✅ Sukses", "Akun '${data['user']['username']}' berhasil dibuat.");
         createUsernameController.clear();
         createPasswordController.clear();
         createDayController.clear();
@@ -172,15 +155,9 @@ class _AdminPageState extends State<AdminPage> {
         ),
         title: Row(
           children: [
-            Icon(
-              Icons.info_outline,
-              color: accentPurple,
-            ),
+            Icon(Icons.info_outline, color: accentPurple),
             const SizedBox(width: 10),
-            Text(
-              "Information",
-              style: TextStyle(color: primaryWhite),
-            ),
+            Text("Information", style: TextStyle(color: primaryWhite)),
           ],
         ),
         content: Text(message, style: TextStyle(color: Colors.white70)),
@@ -193,13 +170,7 @@ class _AdminPageState extends State<AdminPage> {
               ),
               child: TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text(
-                  "OK",
-                  style: TextStyle(
-                    color: primaryWhite,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                child: Text("OK", style: TextStyle(color: primaryWhite, fontWeight: FontWeight.bold)),
               ),
             ),
           ),
@@ -322,11 +293,7 @@ class _AdminPageState extends State<AdminPage> {
               children: [
                 Text(
                   user['username'],
-                  style: TextStyle(
-                    color: primaryWhite,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(color: primaryWhite, fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 SizedBox(height: 4),
                 Text(
@@ -341,7 +308,6 @@ class _AdminPageState extends State<AdminPage> {
               ],
             ),
           ),
-
           Container(
             decoration: BoxDecoration(
               color: Colors.redAccent.withOpacity(0.1),
@@ -363,16 +329,10 @@ class _AdminPageState extends State<AdminPage> {
                       children: [
                         Icon(Icons.info_outline, color: accentPurple),
                         const SizedBox(width: 10),
-                        Text(
-                          "Konfirmasi",
-                          style: TextStyle(color: primaryWhite),
-                        ),
+                        Text("Konfirmasi", style: TextStyle(color: primaryWhite)),
                       ],
                     ),
-                    content: Text(
-                      "Yakin ingin menghapus user '${user['username']}'?",
-                      style: TextStyle(color: Colors.white70),
-                    ),
+                    content: Text("Yakin ingin menghapus user '${user['username']}'?", style: TextStyle(color: Colors.white70)),
                     actions: [
                       Container(
                         width: double.infinity,
@@ -382,38 +342,22 @@ class _AdminPageState extends State<AdminPage> {
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [primaryPurple, accentPurple],
-                                ),
+                                gradient: LinearGradient(colors: [primaryPurple, accentPurple]),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: TextButton(
                                 onPressed: () => Navigator.pop(context, false),
-                                child: Text(
-                                  "Batal",
-                                  style: TextStyle(
-                                    color: primaryWhite,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                                child: Text("Batal", style: TextStyle(color: primaryWhite, fontWeight: FontWeight.bold)),
                               ),
                             ),
                             Container(
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [Colors.redAccent, Colors.red],
-                                ),
+                                gradient: LinearGradient(colors: [Colors.redAccent, Colors.red]),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: TextButton(
                                 onPressed: () => Navigator.pop(context, true),
-                                child: Text(
-                                  "Hapus",
-                                  style: TextStyle(
-                                    color: primaryWhite,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                                child: Text("Hapus", style: TextStyle(color: primaryWhite, fontWeight: FontWeight.bold)),
                               ),
                             ),
                           ],
@@ -422,7 +366,6 @@ class _AdminPageState extends State<AdminPage> {
                     ],
                   ),
                 );
-
                 if (confirm == true) {
                   deleteController.text = user['username'];
                   _deleteUser();
@@ -444,12 +387,8 @@ class _AdminPageState extends State<AdminPage> {
         return ElevatedButton(
           onPressed: () => setState(() => currentPage = page),
           style: ElevatedButton.styleFrom(
-            backgroundColor: currentPage == page
-                ? accentPurple
-                : Colors.transparent,
-            foregroundColor: currentPage == page
-                ? primaryWhite
-                : Colors.white54,
+            backgroundColor: currentPage == page ? accentPurple : Colors.transparent,
+            foregroundColor: currentPage == page ? primaryWhite : Colors.white54,
             padding: EdgeInsets.symmetric(horizontal: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
@@ -481,7 +420,6 @@ class _AdminPageState extends State<AdminPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Header
                 Icon(Icons.admin_panel_settings, color: accentPurple, size: 50),
                 SizedBox(height: 10),
                 Text(
@@ -493,16 +431,11 @@ class _AdminPageState extends State<AdminPage> {
                     fontFamily: 'Orbitron',
                     letterSpacing: 2,
                     shadows: [
-                      Shadow(
-                        color: primaryPurple.withOpacity(0.8),
-                        blurRadius: 10,
-                      ),
+                      Shadow(color: primaryPurple.withOpacity(0.8), blurRadius: 10),
                     ],
                   ),
                 ),
                 SizedBox(height: 40),
-
-                // SECTION 1: DELETE USER
                 _buildGlassCard(
                   title: "DELETE USER",
                   icon: FontAwesomeIcons.userSlash,
@@ -516,16 +449,10 @@ class _AdminPageState extends State<AdminPage> {
                     Container(
                       height: 50,
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Colors.redAccent, Colors.red],
-                        ),
+                        gradient: LinearGradient(colors: [Colors.redAccent, Colors.red]),
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
-                          BoxShadow(
-                            color: Colors.red.withOpacity(0.3),
-                            blurRadius: 10,
-                            offset: Offset(0, 4),
-                          ),
+                          BoxShadow(color: Colors.red.withOpacity(0.3), blurRadius: 10, offset: Offset(0, 4)),
                         ],
                       ),
                       child: ElevatedButton(
@@ -533,30 +460,20 @@ class _AdminPageState extends State<AdminPage> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
                           shadowColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         ),
                         child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.delete, size: 18, color: Colors.white),
                             SizedBox(width: 8),
-                            Text(
-                              "DELETE ACCOUNT",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1,
-                              ),
-                            ),
+                            Text("DELETE ACCOUNT", style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1)),
                           ],
                         ),
                       ),
                     ),
                   ],
                 ),
-
-                // SECTION 2: CREATE ACCOUNT
                 _buildGlassCard(
                   title: "CREATE ACCOUNT",
                   icon: FontAwesomeIcons.userPlus,
@@ -578,136 +495,99 @@ class _AdminPageState extends State<AdminPage> {
                       type: TextInputType.number,
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 4,
-                      ),
-                                        decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: borderGlass),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: newUserRole,
-                      dropdownColor: bgDark,
-                      style: TextStyle(color: primaryWhite),
-                      items: roleOptions.map((role) {
-                        return DropdownMenuItem(
-                          value: role,
-                          child: Text(role.toUpperCase()),
-                        );
-                      }).toList(),
-                      onChanged: (val) =>
-                          setState(() => newUserRole = val ?? 'member'),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [primaryPurple, accentPurple],
-                    ),
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: primaryPurple.withOpacity(0.4),
-                        blurRadius: 10,
-                        offset: Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: ElevatedButton(
-                    onPressed: isLoading ? null : _createAccount,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
+                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: borderGlass),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: newUserRole,
+                          dropdownColor: bgDark,
+                          style: TextStyle(color: primaryWhite),
+                          items: roleOptions.map((role) {
+                            return DropdownMenuItem(value: role, child: Text(role.toUpperCase()));
+                          }).toList(),
+                          onChanged: (val) => setState(() => newUserRole = val ?? 'member'),
+                        ),
                       ),
                     ),
-                    child: isLoading
-                        ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: primaryWhite,
-                            ),
-                          )
-                        : Text(
-                            "CREATE ACCOUNT",
-                            style: TextStyle(
-                              color: primaryWhite,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                  ),
-                ),
-              ],
-            ),
-
-            // SECTION 3: USER LIST
-            _buildGlassCard(
-              title: "USER MANAGEMENT",
-              icon: FontAwesomeIcons.users,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: borderGlass),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: selectedRole,
-                      dropdownColor: bgDark,
-                      style: TextStyle(color: primaryWhite),
-                      items: roleOptions.map((role) {
-                        return DropdownMenuItem(
-                          value: role,
-                          child: Text(role.toUpperCase()),
-                        );
-                      }).toList(),
-                      onChanged: (val) {
-                        if (val != null) {
-                          selectedRole = val;
-                          _filterAndPaginate();
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                isLoading
-                    ? Center(
-                        child: CircularProgressIndicator(
-                          color: accentPurple,
-                        ),
-                      )
-                    : Column(
-                        children: [
-                          ..._getCurrentPageData()
-                              .map((u) => _buildUserItem(u))
-                              .toList(),
-                          SizedBox(height: 20),
-                          _buildPagination(),
+                    SizedBox(height: 20),
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(colors: [primaryPurple, accentPurple]),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(color: primaryPurple.withOpacity(0.4), blurRadius: 10, offset: Offset(0, 4)),
                         ],
                       ),
+                      child: ElevatedButton(
+                        onPressed: isLoading ? null : _createAccount,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: isLoading
+                            ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: primaryWhite))
+                            : Text("CREATE ACCOUNT", style: TextStyle(color: primaryWhite, fontWeight: FontWeight.bold, letterSpacing: 1)),
+                                                ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                // SECTION 3: USER MANAGEMENT
+                _buildGlassCard(
+                  title: "USER MANAGEMENT",
+                  icon: FontAwesomeIcons.users,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: borderGlass),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: selectedRole,
+                          dropdownColor: bgDark,
+                          style: TextStyle(color: primaryWhite),
+                          items: roleOptions.map((role) {
+                            return DropdownMenuItem(value: role, child: Text(role.toUpperCase()));
+                          }).toList(),
+                          onChanged: (val) {
+                            if (val != null) {
+                              selectedRole = val;
+                              _filterAndPaginate();
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    isLoading
+                        ? Center(child: CircularProgressIndicator(color: accentPurple))
+                        : Column(
+                            children: [
+                              ..._getCurrentPageData().map((u) => _buildUserItem(u)).toList(),
+                              SizedBox(height: 20),
+                              _buildPagination(),
+                            ],
+                          ),
+                  ],
+                ),
+                SizedBox(height: 30),
               ],
             ),
-
-            SizedBox(height: 30),
-          ],
+          ),
         ),
       ),
-    ),
-  ),
-);
+    );
+  }
+}
+                    
+ 
